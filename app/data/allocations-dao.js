@@ -70,10 +70,9 @@ function AllocationsDAO(db) {
                 // Also implement fix in allocations.html for UX.                             
                 const parsedThreshold = parseInt(threshold, 10);
                 
-                if (parsedThreshold >= 0 && parsedThreshold <= 99) {
-                    return {$where: `this.userId == ${parsedUserId} && this.stocks > ${threshold}`};
+                if (parsedThreshold < 0 && parsedThreshold > 99) {
+                    throw `The user supplied threshold: ${parsedThreshold} was not valid.`;
                 }
-                throw `The user supplied threshold: ${parsedThreshold} was not valid.`;
                 
                 return {
                     $where: `this.userId == ${parsedUserId} && this.stocks > '${threshold}'`
