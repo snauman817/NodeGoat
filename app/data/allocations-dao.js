@@ -61,7 +61,7 @@ function AllocationsDAO(db) {
         function searchCriteria() {
 
             if (threshold) {
-                /*
+                
                 // Fix for A1 - 2 NoSQL Injection - escape the threshold parameter properly
                 // Fix this NoSQL Injection which doesn't sanitze the input parameter 'threshold' and allows attackers
                 // to inject arbitrary javascript code into the NoSQL query:
@@ -70,11 +70,10 @@ function AllocationsDAO(db) {
                 // Also implement fix in allocations.html for UX.                             
                 const parsedThreshold = parseInt(threshold, 10);
                 
-                if (parsedThreshold >= 0 && parsedThreshold <= 99) {
-                    return {$where: `this.userId == ${parsedUserId} && this.stocks > ${threshold}`};
+                if (parsedThreshold < 0 && parsedThreshold > 99) {
+                    throw `The user supplied threshold: ${parsedThreshold} was not valid.`;
                 }
-                throw `The user supplied threshold: ${parsedThreshold} was not valid.`;
-                */
+                
                 return {
                     $where: `this.userId == ${parsedUserId} && this.stocks > '${threshold}'`
                 };

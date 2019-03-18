@@ -17,10 +17,11 @@ var exports = function(app, db) {
     var contributionsHandler = new ContributionsHandler(db);
     var allocationsHandler = new AllocationsHandler(db);
     var memosHandler = new MemosHandler(db);
-
+    
     // Middleware to check if a user is logged in
     var isLoggedIn = sessionHandler.isLoggedInMiddleware;
 
+    //var SessionHandler = require("./session");
     //Middleware to check if user has admin rights
     var isAdmin = sessionHandler.isAdminUserMiddleware;
 
@@ -50,12 +51,10 @@ var exports = function(app, db) {
     app.post("/contributions", isLoggedIn, contributionsHandler.handleContributionsUpdate);
 
     // Benefits Page
-    app.get("/benefits", isLoggedIn, benefitsHandler.displayBenefits);
-    app.post("/benefits", isLoggedIn, benefitsHandler.updateBenefits);
-    /* Fix for A7 - checks user role to implement  Function Level Access Control
-     app.get("/benefits", isLoggedIn, isAdmin, benefitsHandler.displayBenefits);
-     app.post("/benefits", isLoggedIn, isAdmin, benefitsHandler.updateBenefits);
-     */
+    //Fix for A7 - checks user role to implement  Function Level Access Control
+    app.get("/benefits", isLoggedIn, isAdmin, benefitsHandler.displayBenefits);
+    app.post("/benefits", isLoggedIn, isAdmin, benefitsHandler.updateBenefits);
+    
 
     // Allocations Page
     app.get("/allocations/:userId", isLoggedIn, allocationsHandler.displayAllocations);
